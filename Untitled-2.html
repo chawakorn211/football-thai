@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>สมัครสมาชิก - โลกฟุตบอล</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-box {
+      background: #333;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #0f0;
+      width: 320px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 50px;
+      background-color: #1de9b6;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #00e676;
+    }
+    .error {
+      background: #f44336;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2>สมัครสมาชิก</h2>
+    <div id="error" class="error"></div>
+    <form id="signupForm" autocomplete="off">
+      <label for="name">ชื่อ-นามสกุล</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">อีเมล</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="password">รหัสผ่าน</label>
+      <input type="password" id="password" name="password" required minlength="6" />
+
+      <label for="confirmPassword">ยืนยันรหัสผ่าน</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" />
+
+      <button type="submit">สมัครสมาชิก</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const errorDiv = document.getElementById('error');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      errorDiv.style.display = 'none';
+      errorDiv.textContent = '';
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+
+      if (name.length < 3) {
+        showError('กรุณากรอกชื่อ-นามสกุลอย่างน้อย 3 ตัวอักษร');
+        return;
+      }
+      if (!validateEmail(email)) {
+        showError('รูปแบบอีเมลไม่ถูกต้อง');
+        return;
+      }
+      if (password.length < 6) {
+        showError('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+        return;
+      }
+      if (password !== confirmPassword) {
+        showError('รหัสผ่านและยืนยันรหัสผ่านไม่ตรงกัน');
+        return;
+      }
+
+      // บันทึกข้อมูลผู้ใช้ใน localStorage
+      const user = { name, email };
+      localStorage.setItem('footballUser', JSON.stringify(user));
+
+      // ไปหน้า home.html
+      window.location.href = 'home.html';
+    });
+
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.style.display = 'block';
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+  </script>
+</body>  <h1>เว็บจะไม่จดจำข้อมูล  
+             (ไม่จำเป็นต้องเหมือนกัน)
+</h1>
+</html>
